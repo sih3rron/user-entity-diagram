@@ -1,4 +1,4 @@
-## Dl User Entity Mapping
+## User Entity Mapping // Adjacency Diagram
 
 **&nbsp;ℹ&nbsp;Note**:
 
