@@ -29,7 +29,7 @@ const Form = () => {
       }
 
       // Foundation Code
-      const orgData = [["Buenos Aires", "A1", ["C3", "D4"]], ["Santa fe", "B2", ["C3"]], ["Córdoba", "C3", []], ["Mendoza", "D4", []]]
+      const orgData = [["Buenos Aires", "A1", ["C3", "D4"]], ["Santa fe", "B2", ["C3"]], ["Córdoba", "C3", []], ["Mendoza", "D4", []], ["Rosario", "E5", ["A1", "D4"]], ["Chubut", "F5", ["C3", "E5"]], ["Saint Luis", "G6", []], ["La Pampa", "H7", ["G6", "E5", "A1"]]]
 
       const EntityDiagram = new Graph();
 
@@ -39,7 +39,7 @@ const Form = () => {
 
       //Loop over the entity data to create nodes/Miro shapes. Assign ShapeIDs for Connector references
       for (let i = 0; i < orgData.length; i++) {
-        EntityDiagram.addNode(orgData[i][1], orgData[i][0], shapes);
+        EntityDiagram.addNode(orgData[i][1], orgData[i][0], shapes, i, orgData.length);
       }
 
       //Shapes array contains full promise values.
@@ -60,7 +60,7 @@ const Form = () => {
 
             console.log(`Node 1: ${fullData[l][2]} | `, `Shape 1: ${fullData[l][0]} | `, `Node 2: ${arr[idx]} | `, `Shape 2: ${secShape[0][0]}  `)
 
-            EntityDiagram.addConnection(fullData[l][2], fullData[l][0], arr[idx], secShape[0][0])
+            EntityDiagram.addConnection(fullData[l][2], fullData[l][0], arr[idx], secShape[0][0], fullData[l][1])
 
           });
         }

@@ -1,4 +1,6 @@
-export async function Shape(sapId, title) {
+import { yAxis, xAxis } from "./Position";
+
+export async function Shape(sapId, title, iterator, noOfItems) {
 
   let entityShape = await miro.board.createShape({
     "content": `<strong>${title}</strong>`,
@@ -18,8 +20,8 @@ export async function Shape(sapId, title) {
     },
     "width": 300,
     "height": 150,
-    "x": 0,
-    "y": 0,
+    "x": xAxis(iterator, noOfItems),
+    "y": yAxis(iterator, noOfItems),
   });
 
   await entityShape.setMetadata('transaction', {

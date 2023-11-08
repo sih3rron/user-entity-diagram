@@ -8,19 +8,19 @@ export class Graph{
         this.adjacencyList = {}
     }
 
-    addNode(node, sapId, shapes){
+    addNode(node, sapId, shapes, iterator, noOfItems){
         if(!this.adjacencyList[node]) {
             this.adjacencyList[node] = []
-            const shapeData = Shape(node, sapId);
+            const shapeData = Shape(node, sapId, iterator, noOfItems);
             shapes.push(shapeData);
         } 
     }
 
-   addConnection(node1, shape1, node2, shape2){
+   addConnection(node1, shape1, node2, shape2, title){
         this.adjacencyList[node1].push(node2)
         this.adjacencyList[node2].push(node1)
         
-        Connector(shape1, shape2);
+        Connector(shape1, shape2, title);
     }
 
     removeConnection(node1,node2) {
