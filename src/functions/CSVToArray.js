@@ -1,0 +1,1 @@
+export const CSVToArray = (data, delimiter = ',', omitFirstRow = false) => data.slice(omitFirstRow ? data.indexOf('\n') + 1 : 0).split('\n').map(c => c.split(delimiter));
