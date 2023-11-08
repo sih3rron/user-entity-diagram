@@ -19,3 +19,13 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+.margin-top{
+  margin-top: 5px;
+}
+
+.box-border{
+  padding: var(--space-small);
+  border: 1px lightgray solid;
+  border-radius: 2px;
+}
