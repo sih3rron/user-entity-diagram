@@ -1,7 +1,6 @@
-import { yAxis, xAxis } from "./Position";
+import { xAxis, yAxis } from "./Position";
 
-export async function Shape(sapId, title, iterator, noOfItems) {
-
+export async function Shape(sapId, title, iterator, noOfItems, tcount) {
   let entityShape = await miro.board.createShape({
     "content": `<strong>${title}</strong>`,
     "shape": "round_rectangle",
@@ -9,7 +8,7 @@ export async function Shape(sapId, title, iterator, noOfItems) {
       "fillColor": "#228B22",
       "fillOpacity": 1.0,
       "fontFamily": "open_sans",
-      "fontSize": 25,
+      "fontSize": 10,
       "borderColor": "#1a1a1a",
       "borderWidth": 2.0,
       "borderOpacity": 1.0,
@@ -18,19 +17,19 @@ export async function Shape(sapId, title, iterator, noOfItems) {
       "textAlignVertical": "middle",
       "color": "#ffffff",
     },
-    "width": 400,
-    "height": 200,
-   /*  "x": xAxis(iterator, noOfItems),
-    "y": yAxis(iterator, noOfItems),*/
-   "x": 0,
-   "y": 0, 
+    "width": 100,
+    "height": 50,
+    "x": xAxis(iterator, noOfItems, tcount),
+    "y": yAxis(iterator, noOfItems, tcount),
+    //"x": 0,
+   //"y": 0,
   });
 
-  await entityShape.setMetadata('transaction', {
-        entity: title,
-        sap: sapId,
-        entityShapeId: await miro.board.getById(entityShape.id)
-    })
+  await entityShape.setMetadata("transaction", {
+    entity: title,
+    sap: sapId,
+    entityShapeId: await miro.board.getById(entityShape.id),
+  });
 
   return [entityShape.id, sapId];
 }

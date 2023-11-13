@@ -11,25 +11,23 @@ const Form = () => {
 
     reader.onload = e => {
 
-//Assign CSV event results to data variable
+      //Assign CSV event results to data variable
       const data = e.target.result;
 
-//Initial Data Array
-      const CSVArray = CSVToArray(data, '\t', true);
-      const orgData = CSVArray;
+      //Initial Data Array
+      const orgData = CSVToArray(data, '\t', true);
       const EntityDiagram = new Graph();
 
-//Array for Shape ID assignments
+      //Array for Shape ID assignments
       const shapes = [];
-
-//Loop over the entity data to create nodes/Miro shapes. Assign ShapeIDs for Connector references
+      //Loop over the entity data to create nodes/Miro shapes. Assign ShapeIDs for Connector references
       for (let i = 0; i < orgData.length; i++) {
-        EntityDiagram.addNode(orgData[i][1], orgData[i][0], shapes, i, orgData.length);
+        EntityDiagram.addNode(orgData[i][1], orgData[i][0], shapes, i, orgData.length, orgData[i][5]);
       }
 
-//Shapes array contains full promise values.
-     Promise.all(shapes).then(values => {
-//console.log("Shapes Data: ", values)
+      //Shapes array contains full promise values.
+      Promise.all(shapes).then(values => {
+        //console.log("Shapes Data: ", values)
 
         const fullData = [];
 
@@ -39,13 +37,13 @@ const Form = () => {
           }
         })
 
-  //console.log("Full data: ", fullData)
+        //console.log("Full data: ", fullData)
 
         for (let l = 0; l < fullData.length; l++) {
-          if(fullData[l][3].length > 0){
-            let secShape = values.filter(val => { if (val[1] === fullData[l][3] ) return fullData[l].splice(fullData[l].length, 0, val[0]) });
-            EntityDiagram.addConnection(fullData[l][2], fullData[l][0], fullData[l][3], fullData[l][8], fullData[l][5] )
-            console.log(`Node 1: ${fullData[l][2]} | `, `Shape 1: ${fullData[l][0]} | `, `Node 2: ${fullData[l][3]} | `, `Shape 2: ${fullData[l][8]} | `, `Transaction: ${fullData[l][5]} | `   )
+          if (fullData[l][3].length > 0) {
+            let secShape = values.filter(val => { if (val[1] === fullData[l][3]) return fullData[l].splice(fullData[l].length, 0, val[0]) });
+            EntityDiagram.addConnection(fullData[l][2], fullData[l][0], fullData[l][3], fullData[l][7], fullData[l][5], fullData[l][5])
+            //console.log(`Node 1: ${fullData[l][2]} | `, `Shape 1: ${fullData[l][0]} | `, `Node 2: ${fullData[l][3]} | `, `Shape 2: ${fullData[l][7]} | `, `Transaction: ${fullData[l][5]} | `  , `Transaction Count: ${fullData[l][6]} ` )
           }
         }
 
