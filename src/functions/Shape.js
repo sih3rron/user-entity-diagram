@@ -9,7 +9,7 @@ export async function Shape(sapId, title, iterator, noOfItems) {
       "fillColor": "#228B22",
       "fillOpacity": 1.0,
       "fontFamily": "open_sans",
-      "fontSize": 30,
+      "fontSize": 25,
       "borderColor": "#1a1a1a",
       "borderWidth": 2.0,
       "borderOpacity": 1.0,
@@ -18,10 +18,12 @@ export async function Shape(sapId, title, iterator, noOfItems) {
       "textAlignVertical": "middle",
       "color": "#ffffff",
     },
-    "width": 300,
-    "height": 150,
-    "x": xAxis(iterator, noOfItems),
-    "y": yAxis(iterator, noOfItems),
+    "width": 400,
+    "height": 200,
+   /*  "x": xAxis(iterator, noOfItems),
+    "y": yAxis(iterator, noOfItems),*/
+   "x": 0,
+   "y": 0, 
   });
 
   await entityShape.setMetadata('transaction', {

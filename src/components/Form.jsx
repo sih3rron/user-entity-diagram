@@ -11,40 +11,25 @@ const Form = () => {
 
     reader.onload = e => {
 
-      //Assign CSV event results to data variable
+//Assign CSV event results to data variable
       const data = e.target.result;
 
-      //Initial Data Array
+//Initial Data Array
       const CSVArray = CSVToArray(data, '\t', true);
-      const keys = CSVArray.map(d => d[1]);
-
-      //Unique Entity Names as Keys
-      const uniqueKeys = [...new Set(keys)];
-      const entityData = [];
-
-      //Loop to add each array into another structure by Unique Entity Name
-      for (let i = 0; i < uniqueKeys.length; i++) {
-        let uniqueEntity = CSVArray.filter((item) => item[1] === uniqueKeys[i]);
-        entityData.push(uniqueEntity);
-      }
-
-      // Foundation Code
-      const orgData = [["Buenos Aires", "A1", ["C3", "D4"]], ["Santa fe", "B2", ["C3"]], ["Córdoba", "C3", []], ["Mendoza", "D4", []], ["Rosario", "E5", ["A1", "D4"]], ["Chubut", "F5", ["C3", "E5"]], ["Saint Luis", "G6", []], ["La Pampa", "H7", ["G6", "E5", "A1"]]]
-
+      const orgData = CSVArray;
       const EntityDiagram = new Graph();
 
-      //Array for Shape ID assignments
+//Array for Shape ID assignments
       const shapes = [];
 
-
-      //Loop over the entity data to create nodes/Miro shapes. Assign ShapeIDs for Connector references
+//Loop over the entity data to create nodes/Miro shapes. Assign ShapeIDs for Connector references
       for (let i = 0; i < orgData.length; i++) {
         EntityDiagram.addNode(orgData[i][1], orgData[i][0], shapes, i, orgData.length);
       }
 
-      //Shapes array contains full promise values.
-      Promise.all(shapes).then(values => {
-        console.log(values)
+//Shapes array contains full promise values.
+     Promise.all(shapes).then(values => {
+//console.log("Shapes Data: ", values)
 
         const fullData = [];
 
@@ -54,19 +39,17 @@ const Form = () => {
           }
         })
 
+  //console.log("Full data: ", fullData)
+
         for (let l = 0; l < fullData.length; l++) {
-          fullData[l][3].forEach((item, idx, arr) => {
-            let secShape = values.filter(val => { if (val[1] === arr[idx]) return val[0] });
-
-            console.log(`Node 1: ${fullData[l][2]} | `, `Shape 1: ${fullData[l][0]} | `, `Node 2: ${arr[idx]} | `, `Shape 2: ${secShape[0][0]}  `)
-
-            EntityDiagram.addConnection(fullData[l][2], fullData[l][0], arr[idx], secShape[0][0], fullData[l][1])
-
-          });
+          if(fullData[l][3].length > 0){
+            let secShape = values.filter(val => { if (val[1] === fullData[l][3] ) return fullData[l].splice(fullData[l].length, 0, val[0]) });
+            EntityDiagram.addConnection(fullData[l][2], fullData[l][0], fullData[l][3], fullData[l][8], fullData[l][5] )
+            console.log(`Node 1: ${fullData[l][2]} | `, `Shape 1: ${fullData[l][0]} | `, `Node 2: ${fullData[l][3]} | `, `Shape 2: ${fullData[l][8]} | `, `Transaction: ${fullData[l][5]} | `   )
+          }
         }
-      }
 
-      );
+      });
 
     };
 

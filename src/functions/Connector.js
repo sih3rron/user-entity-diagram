@@ -1,11 +1,40 @@
-export async function Connector(beginning, ending, title) {
+export async function Connector(beginning, ending, transaction) {
+  let connectColor = "#ff00ff"
+  let dashed = "dashed"
+  switch (transaction) {
+    case "1":
+      connectColor = "black";
+      break;
+    case "2":
+      connectColor = "#32a852";
+      break;
+    case "3":
+      connectColor = "#3256a8";
+      break;
+    case "4":
+      connectColor = "#96232c";
+      break;
+    case "5":
+      connectColor = "#d1af17";
+      break;
+    case "6":
+      connectColor = "#7717d1";
+      break;
+    case "6a":
+      dashed = "normal"
+      connectColor = "#7717d1";
+      break;
+    default:
+      connectColor = "#ff00ff";
+  }
+
   let connector = await miro.board.createConnector({
     shape: "curved",
     style: {
       startStrokeCap: "none",
       endStrokeCap: "filled_triangle",
-      strokeStyle: "dashed",
-      strokeColor: "#ff00ff", // Magenta
+      strokeStyle: dashed,
+      strokeColor: connectColor, 
       strokeWidth: 5,
     },
     // Set the start point of the connector.
@@ -29,7 +58,7 @@ export async function Connector(beginning, ending, title) {
     },
     captions: [
       {
-        content: `${title}`,
+        content: `${transaction}`,
         position: 0.5,
         textAlignVertical: "bottom",
       },
