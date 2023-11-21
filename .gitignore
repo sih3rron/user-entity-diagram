@@ -15,7 +15,7 @@
 .idea
 /src/data
 
-*_v2.jsx
+*_v*.jsx
 
 # debug
 npm-debug.log*

@@ -1,6 +1,7 @@
 import styles from './Form.module.css';
 import { Graph } from '../functions/AdjacencyList';
 import { CSVToArray } from '../functions/CSVToArray';
+import { orderLength } from '../functions/compareFn';
 
 const Form = () => {
 
@@ -15,44 +16,109 @@ const Form = () => {
       const data = e.target.result;
 
       //Initial Data Array
-      const orgData = CSVToArray(data, '\t', true);
-      const EntityDiagram = new Graph();
+      const EntityData = CSVToArray(data, '\t', true);
+      const uniqueKeys = {};
 
-      //Array for Shape ID assignments
+      // Filter the original array to get only unique keys and data
+      const newArray = EntityData.filter(item => {
+        // Check if the key is already in the uniqueKeys object
+        if (!uniqueKeys[item[1]]) {
+          // If not, add it to the uniqueKeys object and include the item in the new array
+          uniqueKeys[item[1]] = true;
+          return true;
+        }
+        // If the key is already in uniqueKeys, skip this item (it's a duplicate)
+        return false;
+      });
+
+      const arrTrim = [];
       const shapes = [];
-      //Loop over the entity data to create nodes/Miro shapes. Assign ShapeIDs for Connector references
-      for (let i = 0; i < orgData.length; i++) {
-        EntityDiagram.addNode(orgData[i][1], orgData[i][0], shapes, i, orgData.length, orgData[i][5]);
-      }
+      const entityGraph = new Graph();
+      newArray.forEach(entity => arrTrim.push([entity.slice(0, -3)]));
+      let flattenData = [];
 
-      //Shapes array contains full promise values.
-      Promise.all(shapes).then(values => {
-        //console.log("Shapes Data: ", values)
+      arrTrim.forEach(row => {
+        const key = row[0][1];
+        row[0].push([])
 
-        const fullData = [];
+        //Add a Shape to the board
+        entityGraph.addNode(row[0][0], row[0][1], shapes);
 
-        orgData.map((org) => {
-          for (let k = 0; k < values.length; k++) {
-            if (org[1] === values[k][1]) { fullData.push([values[k][0], ...org]) }
+        for (let d in EntityData) {
+          if (key === EntityData[d][1]) {
+            if (EntityData[d].slice(2, -2) !== '') {
+              row[0][2].push(EntityData[d].slice(2, -2))
+            }
+          }
+
+        }
+
+        arrTrim.forEach((elem) => {
+          if (elem[0][2] !== undefined) {
+            if (elem[0][2][elem[0][2].length - 1] == '') { elem[0][2].pop() }
           }
         })
 
-        //console.log("Full data: ", fullData)
+      })
 
-        for (let l = 0; l < fullData.length; l++) {
-          if (fullData[l][3].length > 0) {
-            let secShape = values.filter(val => { if (val[1] === fullData[l][3]) return fullData[l].splice(fullData[l].length, 0, val[0]) });
-            EntityDiagram.addConnection(fullData[l][2], fullData[l][0], fullData[l][3], fullData[l][7], fullData[l][5], fullData[l][5])
-            //console.log(`Node 1: ${fullData[l][2]} | `, `Shape 1: ${fullData[l][0]} | `, `Node 2: ${fullData[l][3]} | `, `Shape 2: ${fullData[l][7]} | `, `Transaction: ${fullData[l][5]} | `  , `Transaction Count: ${fullData[l][6]} ` )
+      arrTrim.forEach(row => flattenData.push(row.flat(Infinity)));
+
+      //Shape IDs are all held as Promises within the "Shapes" Array.
+      Promise.all(shapes).then(values => {
+        //console.log("Values: ", values)
+
+        let entityObject = []
+        flattenData.map((org) => {
+          for (let k = 0; k < values.length; k++) {
+            if (org[1] === values[k][1]) {
+
+              org.splice(0, 0, values[k][0]);
+
+            }
+          }
+        });
+
+        flattenData.sort(orderLength);
+
+        flattenData.forEach(elem => {
+          entityObject.push({
+            "sapID": `${elem[2]}`,
+            "org": `${elem[1]}`,
+            "shapeID": `${elem[0]}`,
+            "children": elem.length > 3 ? [elem.slice(3, elem.length)] : [],
+            "childShape": [],
+          });
+        })
+
+        entityObject.forEach(elem => {
+          elem.children.forEach((children) => {
+            children.filter((child) => {
+              for (let v in values) {
+                if (child === values[v][1]) {
+                  elem.childShape.push(values[v][0])
+                }
+              }
+            })
+          })
+        })
+
+
+        for (let w = 0; w < entityObject.length - 1; w++) {
+          if (entityObject[w].children.length > 0) {
+            for (let x = 0; x < entityObject[w].children[0].length; x++) {
+              entityGraph.addConnection(entityObject[w].sapID, entityObject[w].shapeID, entityObject[w].children[0][x], entityObject[w].childShape[x]);
+            }
           }
         }
 
+        const zoom = miro.board.viewport.zoomTo({ id: values[0][0] });
+        //console.log("Entity Tree: ", entityGraph)
       });
+
 
     };
 
     reader.readAsText(file.files[0]);
-
   }
 
   return (

@@ -9,46 +9,13 @@ export function yAxis(i, items) {
     return 0;
 }
 
+//Tier 3
+// x -706 : y -1314
+// x -550 : y -1314
+// 156
 
-/* export function xAxis(i, items, tcount) {
-    let transactCount = parseInt(tcount);
-  
-    if (transactCount >= 40) {
-      console.log("This is 40!");
-      return 0;
-    } else if(transactCount >= 30 && transactCount < 40){
-      console.log("This is 30!");
-      return 500;
-    } else if(transactCount >= 20 && transactCount < 30){
-      console.log("This is 20!");
-      return 1000;
-    } else if(transactCount >= 10 && transactCount < 20){
-      console.log("This is 10!");
-      return 1500;
-    } else if(transactCount < 10){
-      console.log("This is 0!");
-      return 2000;
-    }
-  
-  }
-  
-  export function yAxis(i, items, tcount) {
-    let transactCount = parseInt(tcount);
-    if (transactCount >= 40) {
-      console.log("This is 40!");
-      return 0;
-    } else if(transactCount >= 30 && transactCount < 40){
-      console.log("This is 30!");
-      return 500;
-    } else if(transactCount >= 20 && transactCount < 30){
-      console.log("This is 20!");
-      return 1000;
-    } else if(transactCount >= 10 && transactCount < 20){
-      console.log("This is 10!");
-      return 1500;
-    } else if(transactCount < 10){
-      console.log("This is 0!");
-      return 2000;
-    }
-  } */
-  
+//Tier 2
+// x 51 : y -3178
+
+//Tier 2
+// x -515 : y -3962

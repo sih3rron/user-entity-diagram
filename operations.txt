@@ -1,0 +1,5 @@
+1. Accept a .tsv or .csv file - Done
+2. Convert it into an Array - Done
+3. Deduplicate the Organisations in order to create unique shapes - Done
+4. Assign a Shape ID to every unique Organisation
+5. Connect each Shape ID
