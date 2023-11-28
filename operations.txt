@@ -1,5 +1,25 @@
 1. Accept a .tsv or .csv file - Done
 2. Convert it into an Array - Done
 3. Deduplicate the Organisations in order to create unique shapes - Done
-4. Assign a Shape ID to every unique Organisation
-5. Connect each Shape ID
+4. Assign a Shape ID to every unique Organisation - Done
+5. Connect each Shape ID - Done
+6. Add Share % where < 100% to connecting lines
+7. Positioning on Canvas based on cascading Parent/Child Relationship
+8. Delete Existing diagram and re-render
+
+
+------------------------------------------------------------------------------------------
+
+Add first node to Canvas
+Register it's position to a list.
+Does it have children? 
+Yes - Pass How many children?
+---> x.length pass index. 
+    First child is at 
+        Parent x * idx 
+        Parent y = Y + 100
+
+    Second child ^ * idx
+
+No - pass null;
+

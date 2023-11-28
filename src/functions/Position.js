@@ -1,21 +1,39 @@
-export function xAxis(i, items) {
-    const gap = 100;
-    if (i <= items / 2) return i * gap;
-    if (i > items / 2) return (i * gap) - (items / 2 * gap);
+async function axis(mixIds, idx) {
+console.log(idx)
+  const myParentAxis = await miro.board.get({ "id": mixIds.parent });
+  const myChildAxis = await miro.board.get({ "id": mixIds.child });
+
+  myParentAxis[0].sync();
+  myChildAxis[0].sync();
+  myChildAxis[0].x = myChildAxis[0].width * idx;
+  myChildAxis[0].sync();
+
 }
 
-export function yAxis(i, items) {
-    if (i >= items / 2) return 150;
-    return 0;
+export function bfsPosition(source, graph, values) {
+  const queue = [source];
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+
+    for (const neighbour of graph[current]) {
+
+      
+        queue.push();
+
+      const mixIds = {
+        "parent": 0,
+        "child": 0,
+      };
+
+      values.filter((val) => {
+        if (val[1] === current) mixIds.parent = val[0];
+        if (val[1] === neighbour) mixIds.child = val[0];
+        axis(mixIds, graph[current].indexOf(neighbour));
+      });
+
+
+
+    }
+  }
 }
-
-//Tier 3
-// x -706 : y -1314
-// x -550 : y -1314
-// 156
-
-//Tier 2
-// x 51 : y -3178
-
-//Tier 2
-// x -515 : y -3962

@@ -33,7 +33,7 @@ const Form = () => {
 
       const arrTrim = [];
       const shapes = [];
-      const entityGraph = new Graph();
+      const EntityDiagram = new Graph();
       newArray.forEach(entity => arrTrim.push([entity.slice(0, -3)]));
       let flattenData = [];
 
@@ -42,7 +42,7 @@ const Form = () => {
         row[0].push([])
 
         //Add a Shape to the board
-        entityGraph.addNode(row[0][0], row[0][1], shapes);
+        EntityDiagram.addNode(row[0][0], row[0][1], shapes);
 
         for (let d in EntityData) {
           if (key === EntityData[d][1]) {
@@ -106,13 +106,34 @@ const Form = () => {
         for (let w = 0; w < entityObject.length - 1; w++) {
           if (entityObject[w].children.length > 0) {
             for (let x = 0; x < entityObject[w].children[0].length; x++) {
-              entityGraph.addConnection(entityObject[w].sapID, entityObject[w].shapeID, entityObject[w].children[0][x], entityObject[w].childShape[x]);
+              EntityDiagram.addConnection(entityObject[w].sapID, entityObject[w].shapeID, entityObject[w].children[0][x], entityObject[w].childShape[x]);
             }
           }
         }
 
+        const entries = EntityDiagram.adjacencyList;
+        const entryLength = Object.keys(entries).forEach(entry =>  (console.log(entries[entry].length)));
+
+        async function axis(shapeId, idx) {
+            const myAxis = await miro.board.get({ "id": shapeId });
+            myAxis[0].x = (myAxis[0].width + 25) * idx;
+            myAxis[0].sync();
+          
+          }
+        
+        for(const entry in entries){
+          entries[entry].forEach((e, idx) => {
+            values.filter(val => {
+              if(val[1] == e) {
+                console.log(`${val[0]} is the shape id for ${e} at position ${idx}`);
+                axis(val[0], idx);
+              }
+            })
+          })
+
+        }
+
         const zoom = miro.board.viewport.zoomTo({ id: values[0][0] });
-        //console.log("Entity Tree: ", entityGraph)
       });
 
 

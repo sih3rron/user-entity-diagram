@@ -17,8 +17,8 @@ export async function Shape(title, sapId) {
     },
     "width": 100,
     "height": 50,
-    "x": -6536.211886762968,
-    "y": 5076.614841937692,
+    "x": 0,
+    "y": 0,
   });
 
   return [entityShape.id, sapId];

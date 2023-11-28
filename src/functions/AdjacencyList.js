@@ -3,6 +3,8 @@
 import { Shape } from "./Shape";
 import { Connector } from "./Connector";
 
+
+
 export class Graph{
     constructor(){
         this.adjacencyList = {}
@@ -36,3 +38,5 @@ export class Graph{
         delete this.adjacencyList[node]
     }
 }
+
+export const entityGraph = new Graph();
