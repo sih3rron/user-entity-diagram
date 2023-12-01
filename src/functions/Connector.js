@@ -1,13 +1,13 @@
 export async function Connector(beginning, ending) {
  
   let connector = await miro.board.createConnector({
-    shape: "curved",
+    shape: "elbowed",
     style: {
       startStrokeCap: "none",
-      endStrokeCap: "filled_triangle",
+      endStrokeCap: "rounded_stealth",
       strokeStyle: "dashed",
       strokeColor: "#ff00ff", 
-      strokeWidth: 2,
+      strokeWidth: 1,
     },
     // Set the start point of the connector.
     start: {

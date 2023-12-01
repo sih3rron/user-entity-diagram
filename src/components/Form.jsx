@@ -2,22 +2,27 @@ import styles from './Form.module.css';
 import { Graph } from '../functions/AdjacencyList';
 import { CSVToArray } from '../functions/CSVToArray';
 import { orderLength } from '../functions/compareFn';
+import { elkResults } from '../functions/ELKData';
+
 
 const Form = () => {
 
   async function csvToString(e) {
+
     e.preventDefault();
     const file = document.getElementById("formFile");
     const reader = new FileReader();
 
     reader.onload = e => {
 
-      //Assign CSV event results to data variable
+      //Assign CSV event results to variable
       const data = e.target.result;
 
       //Initial Data Array
       const EntityData = CSVToArray(data, '\t', true);
       const uniqueKeys = {};
+
+      console.log("EntityData: ", EntityData)
 
       // Filter the original array to get only unique keys and data
       const newArray = EntityData.filter(item => {
@@ -65,15 +70,12 @@ const Form = () => {
 
       //Shape IDs are all held as Promises within the "Shapes" Array.
       Promise.all(shapes).then(values => {
-        //console.log("Values: ", values)
 
         let entityObject = []
         flattenData.map((org) => {
           for (let k = 0; k < values.length; k++) {
             if (org[1] === values[k][1]) {
-
               org.splice(0, 0, values[k][0]);
-
             }
           }
         });
@@ -102,7 +104,6 @@ const Form = () => {
           })
         })
 
-
         for (let w = 0; w < entityObject.length - 1; w++) {
           if (entityObject[w].children.length > 0) {
             for (let x = 0; x < entityObject[w].children[0].length; x++) {
@@ -111,35 +112,37 @@ const Form = () => {
           }
         }
 
-        const entries = EntityDiagram.adjacencyList;
-        const entryLength = Object.keys(entries).forEach(entry =>  (console.log(entries[entry].length)));
+        const elkChildren = [];
+        values.forEach(child => elkChildren.push({ id: child[1], width: 50, height: 25 }))
 
-        async function axis(shapeId, idx) {
-            const myAxis = await miro.board.get({ "id": shapeId });
-            myAxis[0].x = (myAxis[0].width + 25) * idx;
-            myAxis[0].sync();
-          
+        const elkEdges = [];
+        EntityData.forEach((entry, idx) => {
+          if (entry[2] !== '') {
+            elkEdges.push({ id: idx, sources: [entry[1]], targets: [entry[2]] })
           }
-        
-        for(const entry in entries){
-          entries[entry].forEach((e, idx) => {
-            values.filter(val => {
-              if(val[1] == e) {
-                console.log(`${val[0]} is the shape id for ${e} at position ${idx}`);
-                axis(val[0], idx);
-              }
-            })
-          })
+        });
 
-        }
+
+        const graph = {
+          id: "root",
+          layoutOptions: {
+            "elk.algorithm": "mrtree",
+            "elk.spacing.nodeNode": 50,
+          },
+          children: elkChildren,
+          edges: elkEdges,
+        };
+
+        elkResults(graph);
 
         const zoom = miro.board.viewport.zoomTo({ id: values[0][0] });
-      });
 
+      });
 
     };
 
     reader.readAsText(file.files[0]);
+
   }
 
   return (
