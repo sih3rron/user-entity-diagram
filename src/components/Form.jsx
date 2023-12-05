@@ -1,8 +1,9 @@
 import styles from './Form.module.css';
 import { Graph } from '../functions/AdjacencyList';
 import { CSVToArray } from '../functions/CSVToArray';
-import { orderLength } from '../functions/compareFn';
+import { orderByLength } from '../functions/orderByLength';
 import { elkResults } from '../functions/ELKData';
+import { waitForElm } from '../functions/Observer';
 
 
 const Form = () => {
@@ -22,8 +23,6 @@ const Form = () => {
       const EntityData = CSVToArray(data, '\t', true);
       const uniqueKeys = {};
 
-      console.log("EntityData: ", EntityData)
-
       // Filter the original array to get only unique keys and data
       const newArray = EntityData.filter(item => {
         // Check if the key is already in the uniqueKeys object
@@ -42,8 +41,11 @@ const Form = () => {
       newArray.forEach(entity => arrTrim.push([entity.slice(0, -3)]));
       let flattenData = [];
 
+      
+
       arrTrim.forEach(row => {
         const key = row[0][1];
+        row[0].push([])
         row[0].push([])
 
         //Add a Shape to the board
@@ -58,7 +60,7 @@ const Form = () => {
 
         }
 
-        arrTrim.forEach((elem) => {
+        arrTrim.forEach(elem => {
           if (elem[0][2] !== undefined) {
             if (elem[0][2][elem[0][2].length - 1] == '') { elem[0][2].pop() }
           }
@@ -71,7 +73,8 @@ const Form = () => {
       //Shape IDs are all held as Promises within the "Shapes" Array.
       Promise.all(shapes).then(values => {
 
-        let entityObject = []
+        let entityObject = [];
+
         flattenData.map((org) => {
           for (let k = 0; k < values.length; k++) {
             if (org[1] === values[k][1]) {
@@ -80,7 +83,7 @@ const Form = () => {
           }
         });
 
-        flattenData.sort(orderLength);
+        flattenData.sort(orderByLength);
 
         flattenData.forEach(elem => {
           entityObject.push({
@@ -113,9 +116,11 @@ const Form = () => {
         }
 
         const elkChildren = [];
+        
         values.forEach(child => elkChildren.push({ id: child[1], width: 50, height: 25 }))
 
         const elkEdges = [];
+
         EntityData.forEach((entry, idx) => {
           if (entry[2] !== '') {
             elkEdges.push({ id: idx, sources: [entry[1]], targets: [entry[2]] })
@@ -133,16 +138,16 @@ const Form = () => {
           edges: elkEdges,
         };
 
-        elkResults(graph);
-
-        const zoom = miro.board.viewport.zoomTo({ id: values[0][0] });
-
+        elkResults(graph, values).then(() => {
+          const allTheThings = values.filter(val => { 
+            miro.board.select({ id: val[0]} ) 
+          })
+        }).then(miro.board.viewport.zoomTo({ id: values[0][0] }));
+       
       });
-
     };
 
     reader.readAsText(file.files[0]);
-
   }
 
   return (

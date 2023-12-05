@@ -10,7 +10,7 @@ export async function axis(shapeId, layout) {
   myAxis[0].sync();
 }
 
-export async function elkResults(graph) {
+export async function elkResults(graph, values) {
   const fetchCoordinates = elk.layout(graph);
   const coordinates = (await fetchCoordinates).children;
 
