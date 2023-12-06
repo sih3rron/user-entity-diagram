@@ -3,23 +3,12 @@
 3. Deduplicate the Organisations in order to create unique shapes - Done
 4. Assign a Shape ID to every unique Organisation - Done
 5. Connect each Shape ID - Done
-6. Add Share % where < 100% to connecting lines
-7. Positioning on Canvas based on cascading Parent/Child Relationship
-8. Delete Existing diagram and re-render
+6. Positioning on Canvas based on cascading Parent/Child Relationship - Done
+9. Add Share % where Share < 100% to connecting lines - Done
 
 
-------------------------------------------------------------------------------------------
 
-Add first node to Canvas
-Register it's position to a list.
-Does it have children? 
-Yes - Pass How many children?
----> x.length pass index. 
-    First child is at 
-        Parent x * idx 
-        Parent y = Y + 100
+7. Group Existing diagram items
+8. Delete/Reset Existing diagram
 
-    Second child ^ * idx
-
-No - pass null;
 

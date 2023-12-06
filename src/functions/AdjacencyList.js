@@ -18,11 +18,11 @@ export class Graph{
         } 
     }
 
-   addConnection(node1, shape1, node2, shape2){
+   addConnection(node1, shape1, node2, shape2, data){
         this.adjacencyList[node1].push(node2)
         this.adjacencyList[node2].push(node1)
         
-        Connector(shape1, shape2);
+        Connector(shape1, shape2, node1, node2, data);
     }
 
     removeConnection(node1,node2) {

@@ -3,8 +3,6 @@ import { Graph } from '../functions/AdjacencyList';
 import { CSVToArray } from '../functions/CSVToArray';
 import { orderByLength } from '../functions/orderByLength';
 import { elkResults } from '../functions/ELKData';
-import { waitForElm } from '../functions/Observer';
-
 
 const Form = () => {
 
@@ -34,6 +32,8 @@ const Form = () => {
         // If the key is already in uniqueKeys, skip this item (it's a duplicate)
         return false;
       });
+
+      console.log(EntityData)
 
       const arrTrim = [];
       const shapes = [];
@@ -110,7 +110,7 @@ const Form = () => {
         for (let w = 0; w < entityObject.length - 1; w++) {
           if (entityObject[w].children.length > 0) {
             for (let x = 0; x < entityObject[w].children[0].length; x++) {
-              EntityDiagram.addConnection(entityObject[w].sapID, entityObject[w].shapeID, entityObject[w].children[0][x], entityObject[w].childShape[x]);
+              EntityDiagram.addConnection(entityObject[w].sapID, entityObject[w].shapeID, entityObject[w].children[0][x], entityObject[w].childShape[x], EntityData);
             }
           }
         }

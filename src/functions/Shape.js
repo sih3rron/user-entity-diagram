@@ -6,7 +6,7 @@ export async function Shape(title, sapId) {
       "fillColor": "#228B22",
       "fillOpacity": 1.0,
       "fontFamily": "open_sans",
-      "fontSize": 4,
+      "fontSize": 3,
       "borderColor": "#1a1a1a",
       "borderWidth": 2.0,
       "borderOpacity": 1.0,
