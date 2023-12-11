@@ -33,8 +33,6 @@ const Form = () => {
         return false;
       });
 
-      console.log(EntityData)
-
       const arrTrim = [];
       const shapes = [];
       const EntityDiagram = new Graph();
@@ -117,7 +115,7 @@ const Form = () => {
 
         const elkChildren = [];
         
-        values.forEach(child => elkChildren.push({ id: child[1], width: 50, height: 25 }))
+        values.forEach(child => elkChildren.push({ id: child[1], width: 100, height: 50 }))
 
         const elkEdges = [];
 

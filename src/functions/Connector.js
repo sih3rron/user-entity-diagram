@@ -12,11 +12,11 @@ export async function Connector(beginning, ending, id1, id2, data) {
     shape: "elbowed",
     style: {
       startStrokeCap: "none",
-      endStrokeCap: "rounded_stealth",
-      strokeStyle: "dashed",
-      strokeColor: "#ff00ff",
+      endStrokeCap: "none",
+      strokeStyle: "normal",
+      strokeColor: "#151B54",
       strokeWidth: 2,
-      fontSize: 5,
+      fontSize: 7,
       textOrientation: "horizontal",
     },
     start: {
@@ -35,7 +35,7 @@ export async function Connector(beginning, ending, id1, id2, data) {
     captions: [
       {
         content: `${percentage}`,
-        position: 0.5,
+        position: 0.9,
         textAlignVertical: "middle",
       },
     ],

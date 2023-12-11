@@ -6,7 +6,7 @@ const elk = new ELK({
 export async function axis(shapeId, layout) {
   const myAxis = await miro.board.get({ "id": shapeId });
   myAxis[0].x = layout.x;
-  myAxis[0].y = layout.y;
+  myAxis[0].y = layout.y * 1.5;
   myAxis[0].sync();
 }
 

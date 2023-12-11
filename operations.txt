@@ -6,8 +6,6 @@
 6. Positioning on Canvas based on cascading Parent/Child Relationship - Done
 9. Add Share % where Share < 100% to connecting lines - Done
 
-
-
 7. Group Existing diagram items
 8. Delete/Reset Existing diagram
 
