@@ -35,7 +35,7 @@ export async function Connector(beginning, ending, id1, id2, data) {
     captions: [
       {
         content: `${percentage}`,
-        position: 0.9,
+        position: 1.0,
         textAlignVertical: "middle",
       },
     ],

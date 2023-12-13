@@ -130,7 +130,7 @@ const Form = () => {
           id: "root",
           layoutOptions: {
             "elk.algorithm": "mrtree",
-            "elk.spacing.nodeNode": 50,
+            "elk.spacing.nodeNode": 30,
           },
           children: elkChildren,
           edges: elkEdges,
@@ -140,7 +140,7 @@ const Form = () => {
           const allTheThings = values.filter(val => { 
             miro.board.select({ id: val[0]} ) 
           })
-        }).then(miro.board.viewport.zoomTo({ id: values[0][0] }));
+        }).then(miro.board.viewport.zoomTo({ id: values[0][values.length/2] }));
        
       });
     };
