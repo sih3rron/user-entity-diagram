@@ -1,4 +1,4 @@
-export async function Connector(beginning, ending, id1, id2, data, connectorcolor) {
+export async function Connector(beginning, ending, id1, id2, data, connectorcolor, captions) {
   
   let percentage = "";
   data.filter((d) => {
@@ -34,11 +34,11 @@ export async function Connector(beginning, ending, id1, id2, data, connectorcolo
       snapTo: "top",
     },
     captions: [
-      {
+      captions ? {
         content: `${percentage}`,
         position: 0.50,
         textAlignVertical: "middle",
-      },
+      } : {},
     ],
   });
 }

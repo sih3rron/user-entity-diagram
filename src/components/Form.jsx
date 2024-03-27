@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './Form.module.css';
-import { CompactPicker, SketchPicker, SwatchesPicker } from 'react-color';
+import { CompactPicker } from 'react-color';
 import { Graph } from '../functions/AdjacencyList';
 import { CSVToArray } from '../functions/CSVToArray';
 import { orderByLength } from '../functions/orderByLength';
@@ -11,9 +11,10 @@ const Form = () => {
   const [colourShape, setColourShape] = useState("#1E2F97");
   const [colourConnector, setColourConnector] = useState("#151B54");
   const [chooseShape, setShape] = useState("rectangle");
+  const [captions, setCaptions] = useState(false);
 
 
-  async function csvToString(e, shapeColor, connectorColor, chooseShape) {
+  async function csvToString(e, shapeColor, connectorColor, chooseShape, captions) {
 
     e.preventDefault();
     const file = document.getElementById("formFile");
@@ -51,33 +52,6 @@ const Form = () => {
         row[0].push([])
         row[0].push([])
 
-        //Add a Shape to the board
-        EntityDiagram.addNode(row[0][0], row[0][1], shapes, shapeColor, chooseShape);
-
-        for (let d in EntityData) {
-          if (key === EntityData[d][1]) {
-            if (EntityData[d].slice(2, -2) !== '') {
-              row[0][2].push(EntityData[d].slice(2, -2))
-            }
-          }
-
-        }
-
-        arrTrim.forEach(elem => {
-          if (elem[0][2] !== undefined) {
-            if (elem[0][2][elem[0][2].length - 1] == '') { elem[0][2].pop() }
-          }
-        })
-
-      })
-
-      arrTrim.forEach(row => flattenData.push(row.flat(Infinity)));
-
-      arrTrim.forEach(row => {
-        const key = row[0][1];
-        row[0].push([])
-        row[0].push([])
-        console.log(chooseShape)
         //Add a Shape to the board
         EntityDiagram.addNode(row[0][0], row[0][1], shapes, shapeColor, chooseShape);
 
@@ -140,7 +114,7 @@ const Form = () => {
         for (let w = 0; w < entityObject.length - 1; w++) {
           if (entityObject[w].children.length > 0) {
             for (let x = 0; x < entityObject[w].children[0].length; x++) {
-              EntityDiagram.addConnection(entityObject[w].sapID, entityObject[w].shapeID, entityObject[w].children[0][x], entityObject[w].childShape[x], EntityData, connectorColor);
+              EntityDiagram.addConnection(entityObject[w].sapID, entityObject[w].shapeID, entityObject[w].children[0][x], entityObject[w].childShape[x], EntityData, connectorColor, captions);
             }
           }
         }
@@ -185,7 +159,7 @@ const Form = () => {
 
   return (
     <>
-      <form className={`cs1 ce12 ${styles.formContent}`} id="DataUpload" onSubmit={e => csvToString(e, colourShape, colourConnector, chooseShape)} >
+      <form className={`cs1 ce12 ${styles.formContent}`} id="DataUpload" onSubmit={e => csvToString(e, colourShape, colourConnector, chooseShape, captions)} >
 
         <div className="form-group">
           <label htmlFor="formFile">Select your Data file.</label>
@@ -200,6 +174,11 @@ const Form = () => {
             <option value="star">Star</option>
             <option value="can">Can</option>
           </select>
+          <hr />
+          <label className="toggle">
+            <input type="checkbox" tabIndex="0" onChange={(e) => setCaptions(!captions)}/>
+            <span>Toggle <b>'on'</b> a Data Attribute </span>
+          </label>
           <hr />
           <div className={styles.picker}>
             <label htmlFor="compactShape">What colour <b>nodes</b> would you like?</label>
