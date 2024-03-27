@@ -23,7 +23,6 @@ const Form = () => {
       const arrTrim = [];
       const shapes = [];
 
-      console.log(shapeColor)
 
       //Assign CSV event results to variable
       const data = e.target.result;
@@ -136,7 +135,7 @@ const Form = () => {
             })
           })
         })
-console.log(connectorColor)
+
         for (let w = 0; w < entityObject.length - 1; w++) {
           if (entityObject[w].children.length > 0) {
             for (let x = 0; x < entityObject[w].children[0].length; x++) {
@@ -171,8 +170,11 @@ console.log(connectorColor)
         elkResults(graph, values).then(() => {
           const allTheThings = values.filter(val => {
             miro.board.select({ id: val[0] })
+
           })
-        }).then(miro.board.viewport.zoomTo({ id: values[0][values.length / 2] }));
+        }).then(
+          miro.board.viewport.zoomTo({ id: values[0][values.length / 2] })
+          );
 
       });
     };
@@ -185,11 +187,11 @@ console.log(connectorColor)
       <form className={`cs1 ce12 ${styles.formContent}`} id="DataUpload" onSubmit={e => csvToString(e, colourShape, colourConnector)} >
 
         <div className="form-group">
-          <label for="formFile">Select your Data file.</label>
+          <label htmlFor="formFile">Select your Data file.</label>
           <input type="file" id="formFile" accept=".csv, .tsv" />
           <hr />
           <div className={styles.picker}>
-            <label for="compactShape">What colour <b>nodes</b> would you like?</label>
+            <label htmlFor="compactShape">What colour <b>nodes</b> would you like?</label>
             <CompactPicker
               id="compactShape"
               width={250}
@@ -198,7 +200,7 @@ console.log(connectorColor)
               onChange={(color) => setColourShape(`${color.hex}`)}
             />
             <hr />
-            <label for="compactConnector">What colour <b>connectors</b> would you like?</label>
+            <label htmlFor="compactConnector">What colour <b>connectors</b> would you like?</label>
             <CompactPicker
               id="compactConnector"
               width={250}
