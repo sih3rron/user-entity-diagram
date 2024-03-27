@@ -10,10 +10,10 @@ export class Graph{
         this.adjacencyList = {}
     }
 
-    addNode(node, sapId, shapes, shapecolor){
+    addNode(node, sapId, shapes, shapecolor, chooseShape){
         if(!this.adjacencyList[sapId]) {
             this.adjacencyList[sapId] = []
-            const shapeData = Shape(node, sapId, shapecolor);
+            const shapeData = Shape(node, sapId, shapecolor, chooseShape);
             shapes.push(shapeData);
         } 
     }

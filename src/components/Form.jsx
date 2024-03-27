@@ -10,9 +10,10 @@ import { elkResults } from '../functions/ELKData';
 const Form = () => {
   const [colourShape, setColourShape] = useState("#1E2F97");
   const [colourConnector, setColourConnector] = useState("#151B54");
+  const [chooseShape, setShape] = useState("rectangle");
 
 
-  async function csvToString(e, shapeColor, connectorColor) {
+  async function csvToString(e, shapeColor, connectorColor, chooseShape) {
 
     e.preventDefault();
     const file = document.getElementById("formFile");
@@ -51,7 +52,7 @@ const Form = () => {
         row[0].push([])
 
         //Add a Shape to the board
-        EntityDiagram.addNode(row[0][0], row[0][1], shapes, shapeColor);
+        EntityDiagram.addNode(row[0][0], row[0][1], shapes, shapeColor, chooseShape);
 
         for (let d in EntityData) {
           if (key === EntityData[d][1]) {
@@ -76,9 +77,9 @@ const Form = () => {
         const key = row[0][1];
         row[0].push([])
         row[0].push([])
-
+        console.log(chooseShape)
         //Add a Shape to the board
-        EntityDiagram.addNode(row[0][0], row[0][1], shapes, shapeColor);
+        EntityDiagram.addNode(row[0][0], row[0][1], shapes, shapeColor, chooseShape);
 
         for (let d in EntityData) {
           if (key === EntityData[d][1]) {
@@ -146,7 +147,7 @@ const Form = () => {
 
         const elkChildren = [];
 
-        values.forEach(child => elkChildren.push({ id: child[1], width: 100, height: 50 }))
+        values.forEach(child => elkChildren.push({ id: child[1], width: 50, height: 50 }))
 
         const elkEdges = [];
 
@@ -161,7 +162,7 @@ const Form = () => {
           id: "root",
           layoutOptions: {
             "elk.algorithm": "mrtree",
-            "elk.spacing.nodeNode": 30,
+            "elk.spacing.nodeNode": 40,
           },
           children: elkChildren,
           edges: elkEdges,
@@ -184,11 +185,21 @@ const Form = () => {
 
   return (
     <>
-      <form className={`cs1 ce12 ${styles.formContent}`} id="DataUpload" onSubmit={e => csvToString(e, colourShape, colourConnector)} >
+      <form className={`cs1 ce12 ${styles.formContent}`} id="DataUpload" onSubmit={e => csvToString(e, colourShape, colourConnector, chooseShape)} >
 
         <div className="form-group">
           <label htmlFor="formFile">Select your Data file.</label>
           <input type="file" id="formFile" accept=".csv, .tsv" />
+          <hr />
+          <label htmlFor="selectShape">Select your Shape.</label>
+          <select id="selectShape" className='select' onChange={(e) => setShape(e.target.value)}>
+            <option value="rectangle">Rectangle</option>
+            <option value="round_rectangle">Rounded Rectangle</option>
+            <option value="circle">Circle</option>
+            <option value="octagon">Octagon</option>
+            <option value="star">Star</option>
+            <option value="can">Can</option>
+          </select>
           <hr />
           <div className={styles.picker}>
             <label htmlFor="compactShape">What colour <b>nodes</b> would you like?</label>

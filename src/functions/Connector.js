@@ -1,4 +1,5 @@
 export async function Connector(beginning, ending, id1, id2, data, connectorcolor) {
+  
   let percentage = "";
   data.filter((d) => {
     if (d[2] !== '') {
@@ -35,7 +36,7 @@ export async function Connector(beginning, ending, id1, id2, data, connectorcolo
     captions: [
       {
         content: `${percentage}`,
-        position: 0.95,
+        position: 0.50,
         textAlignVertical: "middle",
       },
     ],
