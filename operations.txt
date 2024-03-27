@@ -10,3 +10,5 @@
 8. Delete/Reset Existing diagram
 
 
+https://www.npmjs.com/package/native-promise-pool
+https://www.npmjs.com/package/@supercharge/promise-pool

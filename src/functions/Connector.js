@@ -1,4 +1,4 @@
-export async function Connector(beginning, ending, id1, id2, data) {
+export async function Connector(beginning, ending, id1, id2, data, connectorcolor) {
   let percentage = "";
   data.filter((d) => {
     if (d[2] !== '') {
@@ -14,7 +14,7 @@ export async function Connector(beginning, ending, id1, id2, data) {
       startStrokeCap: "none",
       endStrokeCap: "none",
       strokeStyle: "normal",
-      strokeColor: "#151B54",
+      strokeColor: `${connectorcolor}`,
       strokeWidth: 2,
       fontSize: 7,
       textOrientation: "horizontal",

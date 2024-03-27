@@ -1,18 +1,29 @@
+import { useState } from 'react';
 import styles from './Form.module.css';
+import { CompactPicker, SketchPicker, SwatchesPicker } from 'react-color';
 import { Graph } from '../functions/AdjacencyList';
 import { CSVToArray } from '../functions/CSVToArray';
 import { orderByLength } from '../functions/orderByLength';
 import { elkResults } from '../functions/ELKData';
 
-const Form = () => {
 
-  async function csvToString(e) {
+const Form = () => {
+  const [colourShape, setColourShape] = useState("#1E2F97");
+  const [colourConnector, setColourConnector] = useState("#151B54");
+
+
+  async function csvToString(e, shapeColor, connectorColor) {
 
     e.preventDefault();
     const file = document.getElementById("formFile");
     const reader = new FileReader();
 
     reader.onload = e => {
+      const EntityDiagram = new Graph();
+      const arrTrim = [];
+      const shapes = [];
+
+      console.log(shapeColor)
 
       //Assign CSV event results to variable
       const data = e.target.result;
@@ -23,23 +34,17 @@ const Form = () => {
 
       // Filter the original array to get only unique keys and data
       const newArray = EntityData.filter(item => {
-        // Check if the key is already in the uniqueKeys object
+
         if (!uniqueKeys[item[1]]) {
-          // If not, add it to the uniqueKeys object and include the item in the new array
           uniqueKeys[item[1]] = true;
           return true;
         }
-        // If the key is already in uniqueKeys, skip this item (it's a duplicate)
+
         return false;
       });
 
-      const arrTrim = [];
-      const shapes = [];
-      const EntityDiagram = new Graph();
       newArray.forEach(entity => arrTrim.push([entity.slice(0, -3)]));
       let flattenData = [];
-
-      
 
       arrTrim.forEach(row => {
         const key = row[0][1];
@@ -47,7 +52,34 @@ const Form = () => {
         row[0].push([])
 
         //Add a Shape to the board
-        EntityDiagram.addNode(row[0][0], row[0][1], shapes);
+        EntityDiagram.addNode(row[0][0], row[0][1], shapes, shapeColor);
+
+        for (let d in EntityData) {
+          if (key === EntityData[d][1]) {
+            if (EntityData[d].slice(2, -2) !== '') {
+              row[0][2].push(EntityData[d].slice(2, -2))
+            }
+          }
+
+        }
+
+        arrTrim.forEach(elem => {
+          if (elem[0][2] !== undefined) {
+            if (elem[0][2][elem[0][2].length - 1] == '') { elem[0][2].pop() }
+          }
+        })
+
+      })
+
+      arrTrim.forEach(row => flattenData.push(row.flat(Infinity)));
+
+      arrTrim.forEach(row => {
+        const key = row[0][1];
+        row[0].push([])
+        row[0].push([])
+
+        //Add a Shape to the board
+        EntityDiagram.addNode(row[0][0], row[0][1], shapes, shapeColor);
 
         for (let d in EntityData) {
           if (key === EntityData[d][1]) {
@@ -104,17 +136,17 @@ const Form = () => {
             })
           })
         })
-
+console.log(connectorColor)
         for (let w = 0; w < entityObject.length - 1; w++) {
           if (entityObject[w].children.length > 0) {
             for (let x = 0; x < entityObject[w].children[0].length; x++) {
-              EntityDiagram.addConnection(entityObject[w].sapID, entityObject[w].shapeID, entityObject[w].children[0][x], entityObject[w].childShape[x], EntityData);
+              EntityDiagram.addConnection(entityObject[w].sapID, entityObject[w].shapeID, entityObject[w].children[0][x], entityObject[w].childShape[x], EntityData, connectorColor);
             }
           }
         }
 
         const elkChildren = [];
-        
+
         values.forEach(child => elkChildren.push({ id: child[1], width: 100, height: 50 }))
 
         const elkEdges = [];
@@ -137,11 +169,11 @@ const Form = () => {
         };
 
         elkResults(graph, values).then(() => {
-          const allTheThings = values.filter(val => { 
-            miro.board.select({ id: val[0]} ) 
+          const allTheThings = values.filter(val => {
+            miro.board.select({ id: val[0] })
           })
-        }).then(miro.board.viewport.zoomTo({ id: values[0][values.length/2] }));
-       
+        }).then(miro.board.viewport.zoomTo({ id: values[0][values.length / 2] }));
+
       });
     };
 
@@ -150,11 +182,33 @@ const Form = () => {
 
   return (
     <>
-      <form className={`cs1 ce12 ${styles.formContent}`} id="DataUpload" onSubmit={e => csvToString(e)} >
+      <form className={`cs1 ce12 ${styles.formContent}`} id="DataUpload" onSubmit={e => csvToString(e, colourShape, colourConnector)} >
 
         <div className="form-group">
+          <label for="formFile">Select your Data file.</label>
           <input type="file" id="formFile" accept=".csv, .tsv" />
+          <hr />
+          <div className={styles.picker}>
+            <label for="compactShape">What colour <b>nodes</b> would you like?</label>
+            <CompactPicker
+              id="compactShape"
+              width={250}
+              height={125}
+              color={colourShape}
+              onChange={(color) => setColourShape(`${color.hex}`)}
+            />
+            <hr />
+            <label for="compactConnector">What colour <b>connectors</b> would you like?</label>
+            <CompactPicker
+              id="compactConnector"
+              width={250}
+              height={125}
+              color={colourConnector}
+              onChange={(color) => setColourConnector(`${color.hex}`)}
+            />
+          </div>
         </div>
+
         <button type="submit" className="cs1 ce12 button button-primary" >
           Submit
         </button>

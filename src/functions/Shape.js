@@ -1,9 +1,9 @@
-export async function Shape(title, sapId) {
+export async function Shape(title, sapId, shapecolor) {
   let entityShape = await miro.board.createShape({
     "content": `<strong>${title}</strong>`,
     "shape": "rectangle",
     "style": {
-      "fillColor": "#1E2F97",
+      "fillColor": `${shapecolor}`,
       "fillOpacity": 1.0,
       "fontFamily": "open_sans",
       "fontSize": 6,

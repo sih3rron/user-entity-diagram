@@ -10,19 +10,19 @@ export class Graph{
         this.adjacencyList = {}
     }
 
-    addNode(node, sapId, shapes){
+    addNode(node, sapId, shapes, shapecolor){
         if(!this.adjacencyList[sapId]) {
             this.adjacencyList[sapId] = []
-            const shapeData = Shape(node, sapId);
+            const shapeData = Shape(node, sapId, shapecolor);
             shapes.push(shapeData);
         } 
     }
 
-   addConnection(node1, shape1, node2, shape2, data){
+   addConnection(node1, shape1, node2, shape2, data, connectorcolor){
         this.adjacencyList[node1].push(node2)
         this.adjacencyList[node2].push(node1)
         
-        Connector(shape1, shape2, node1, node2, data);
+        Connector(shape1, shape2, node1, node2, data, connectorcolor);
     }
 
     removeConnection(node1,node2) {
