@@ -1,4 +1,4 @@
-export async function Connector(beginning, ending, id1, id2, data, connectorcolor, captions) {
+export async function Connector(beginning, ending, id1, id2, data, connectorcolor, captions, connectStyle) {
   
   let percentage = "";
   data.filter((d) => {
@@ -10,7 +10,7 @@ export async function Connector(beginning, ending, id1, id2, data, connectorcolo
   });
 
   let connector = await miro.board.createConnector({
-    shape: "elbowed",
+    shape: `${connectStyle}`,
     style: {
       startStrokeCap: "none",
       endStrokeCap: "arrow",

@@ -12,9 +12,10 @@ const Form = () => {
   const [colourConnector, setColourConnector] = useState("#151B54");
   const [chooseShape, setShape] = useState("rectangle");
   const [captions, setCaptions] = useState(false);
+  const [connectStyle, setConnectStyle] = useState("elbowed");
 
 
-  async function csvToString(e, shapeColor, connectorColor, chooseShape, captions) {
+  async function csvToString(e, shapeColor, connectorColor, chooseShape, captions, connectStyle) {
 
     e.preventDefault();
     const file = document.getElementById("formFile");
@@ -114,14 +115,14 @@ const Form = () => {
         for (let w = 0; w < entityObject.length - 1; w++) {
           if (entityObject[w].children.length > 0) {
             for (let x = 0; x < entityObject[w].children[0].length; x++) {
-              EntityDiagram.addConnection(entityObject[w].sapID, entityObject[w].shapeID, entityObject[w].children[0][x], entityObject[w].childShape[x], EntityData, connectorColor, captions);
+              EntityDiagram.addConnection(entityObject[w].sapID, entityObject[w].shapeID, entityObject[w].children[0][x], entityObject[w].childShape[x], EntityData, connectorColor, captions, connectStyle);
             }
           }
         }
 
         const elkChildren = [];
 
-        values.forEach(child => elkChildren.push({ id: child[1], width: 50, height: 50 }))
+        values.forEach(child => elkChildren.push({ id: child[1], width: 70, height: 70 }))
 
         const elkEdges = [];
 
@@ -136,7 +137,7 @@ const Form = () => {
           id: "root",
           layoutOptions: {
             "elk.algorithm": "mrtree",
-            "elk.spacing.nodeNode": 40,
+            "elk.spacing.nodeNode": 30,
           },
           children: elkChildren,
           edges: elkEdges,
@@ -146,7 +147,7 @@ const Form = () => {
 
         elkResults(graph, values)
         .then(() => {
-          const allTheThings = values.filter(val => {
+          values.filter(val => {
             miro.board.select({ id: val[0] })
           })})
         .then(() => {
@@ -167,7 +168,7 @@ const Form = () => {
 
   return (
     <>
-      <form className={`cs1 ce12 ${styles.formContent}`} id="DataUpload" onSubmit={e => csvToString(e, colourShape, colourConnector, chooseShape, captions)} >
+      <form className={`cs1 ce12 ${styles.formContent}`} id="DataUpload" onSubmit={e => csvToString(e, colourShape, colourConnector, chooseShape, captions, connectStyle)} >
 
         <div className="form-group">
           <label htmlFor="formFile">Select your Data file.</label>
@@ -181,6 +182,13 @@ const Form = () => {
             <option value="octagon">Octagon</option>
             <option value="star">Star</option>
             <option value="can">Can</option>
+          </select>
+          <hr />
+          <label htmlFor="selectStyle">Select your Connector Style.</label>
+          <select id="selectStyle" className='select' onChange={(e) => setConnectStyle(e.target.value)}>
+            <option value="elbowed">Elbowed</option>
+            <option value="straight">Straight</option>
+            <option value="curved">Curved</option>
           </select>
           <hr />
           <label className="toggle">
