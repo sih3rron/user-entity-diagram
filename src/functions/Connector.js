@@ -13,11 +13,11 @@ export async function Connector(beginning, ending, id1, id2, data, connectorcolo
     shape: "elbowed",
     style: {
       startStrokeCap: "none",
-      endStrokeCap: "none",
+      endStrokeCap: "arrow",
       strokeStyle: "normal",
       strokeColor: `${connectorcolor}`,
       strokeWidth: 2,
-      fontSize: 7,
+      fontSize: 5,
       textOrientation: "horizontal",
     },
     start: {

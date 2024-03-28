@@ -142,14 +142,22 @@ const Form = () => {
           edges: elkEdges,
         };
 
-        elkResults(graph, values).then(() => {
+
+
+        elkResults(graph, values)
+        .then(() => {
           const allTheThings = values.filter(val => {
             miro.board.select({ id: val[0] })
-
-          })
-        }).then(
-          miro.board.viewport.zoomTo({ id: values[0][values.length / 2] })
-          );
+          })})
+        .then(() => {
+          const ids = []
+          values.map(val => ids.push({id: val[0]}))
+          const group = miro.board.group({ items: ids })
+          
+          miro.board.viewport.zoomTo(group)
+          miro.board.viewport.setZoom(2)
+          
+        });
 
       });
     };
