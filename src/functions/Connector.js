@@ -1,10 +1,21 @@
-export async function Connector(beginning, ending, id1, id2, data, connectorcolor, captions, connectStyle) {
-  
-  let percentage = "";
+export async function Connector(
+  beginning,
+  ending,
+  id1,
+  id2,
+  data,
+  connectorcolor,
+  captions,
+  connectStyle,
+) {
+  let attribute = "";
   data.filter((d) => {
-    if (d[2] !== '') {
-      if(d[1] == id1 && d[2] == id2 && d[3] !== "100.00"){ 
-        percentage = d[3];
+    if (d[2] !== "") {
+      if (
+        d[1] == id1 &&
+        d[2] == id2
+      ) {
+        attribute = d[3];
       }
     }
   });
@@ -17,7 +28,7 @@ export async function Connector(beginning, ending, id1, id2, data, connectorcolo
       strokeStyle: "normal",
       strokeColor: `${connectorcolor}`,
       strokeWidth: 2,
-      fontSize: 5,
+      fontSize: 6,
       textOrientation: "horizontal",
     },
     start: {
@@ -34,11 +45,13 @@ export async function Connector(beginning, ending, id1, id2, data, connectorcolo
       snapTo: "top",
     },
     captions: [
-      captions ? {
-        content: `${percentage}`,
-        position: 0.50,
-        textAlignVertical: "middle",
-      } : {},
+      captions
+        ? {
+          content: `${attribute}`,
+          position: 0.97,
+          textAlignVertical: "middle",
+        }
+        : {},
     ],
   });
 }

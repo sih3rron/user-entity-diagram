@@ -99,7 +99,7 @@ const Form = () => {
             "childShape": [],
           });
         })
-
+        
         entityObject.forEach(elem => {
           elem.children.forEach((children) => {
             children.filter((child) => {
@@ -153,12 +153,11 @@ const Form = () => {
         .then(() => {
           const ids = []
           values.map(val => ids.push({id: val[0]}))
-          const group = miro.board.group({ items: ids })
-          
-          miro.board.viewport.zoomTo(group)
-          miro.board.viewport.setZoom(2)
-          
-        });
+          miro.board.group({ items: ids })
+        })
+        .then(miro.board.viewport.zoomTo(values[(values.length - 1) / 2][0]))
+        .then(miro.board.viewport.setZoom(2))
+        
 
       });
     };
